@@ -250,7 +250,7 @@ class TextmapWindowHelper:
     image = Gtk.Image()
     image.set_from_stock(Gtk.STOCK_DND_MULTIPLE, Gtk.IconSize.BUTTON)
     me.textmapview = TextmapView(me.window)
-    me.ui_id = panel.add_item(me.textmapview, "TextMap", "textMap", image)
+    me.ui_id = panel.add_titled(me.textmapview, "TextMap", "Thumbnail")
     
     me.panel = panel
 
@@ -281,3 +281,4 @@ class WindowActivatable(GObject.Object, Gedit.WindowActivatable):
   def update_ui(self):
     if self.window in self._instances:
       self._instances[self.window].update_ui()
+
