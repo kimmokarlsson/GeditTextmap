@@ -22,7 +22,10 @@ import cairo
 import re
 import copy
 import platform
-
+import gi
+gi.require_version('Gedit', '3.0')
+gi.require_version('Gtk', '3.0')
+gi.require_version('GtkSource', '300')
 from gi.repository import Gtk, GdkPixbuf, Gdk, GtkSource, Gio, Gedit, GObject
 
 version = "0.2 beta - gtk3"
