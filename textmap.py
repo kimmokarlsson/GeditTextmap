@@ -119,7 +119,7 @@ class TextmapView(Gtk.VBox):
     me.currentView.get_vadjustment().connect('value-changed', me.on_vadjustment_changed)
     # TODO: make sure value-changed is not conflicting with darea move events
 
-  def tab_changed(me, window, event):
+  def tab_changed(me, window):
     me.currentView = me.geditwin.get_active_view()
     me.currentDoc = me.geditwin.get_active_tab().get_document()
 
@@ -257,9 +257,8 @@ class TextmapWindowHelper:
     image = Gtk.Image()
     image.set_from_stock(Gtk.STOCK_DND_MULTIPLE, Gtk.IconSize.BUTTON)
     me.textmapview = TextmapView(me.window)
-    me.ui_id = Tepl.Panel.add(panel, me.textmapview, "TextMap", _("Thumbnail"), None)
-    
-    me.panel = panel
+    me.panel_item = Tepl.PanelItem.new(me.textmapview, "TextMap", _("Thumbnail"), None, 0)
+    panel.add(me.panel_item)
 
   def deactivate(me):
     me.window = None
