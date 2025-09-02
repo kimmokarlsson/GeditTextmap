@@ -22,11 +22,18 @@ import cairo
 import re
 import copy
 import platform
-
-from gi.repository import Gtk, GdkPixbuf, Gdk, GtkSource, Gio, Gedit, GObject
+import gi
+gi.require_version('Gedit', '3.0')
+gi.require_version('Gtk', '3.0')
+gi.require_version('GtkSource', '300')
+from gi.repository import Gtk, GdkPixbuf, Gdk, GtkSource, Gio, Gedit, GObject, Tepl
 
 version = "0.2 beta - gtk3"
 
+#
+# https://lazka.github.io/pgi-docs/#GtkSource-3.0/classes.html
+# https://wiki.gnome.org/Apps/Gedit/PythonPluginHowTo
+#
 
 def document_lines(document):
   if not document:
@@ -112,7 +119,7 @@ class TextmapView(Gtk.VBox):
     me.currentView.get_vadjustment().connect('value-changed', me.on_vadjustment_changed)
     # TODO: make sure value-changed is not conflicting with darea move events
 
-  def tab_changed(me, window, event):
+  def tab_changed(me, window):
     me.currentView = me.geditwin.get_active_view()
     me.currentDoc = me.geditwin.get_active_tab().get_document()
 
@@ -250,9 +257,8 @@ class TextmapWindowHelper:
     image = Gtk.Image()
     image.set_from_stock(Gtk.STOCK_DND_MULTIPLE, Gtk.IconSize.BUTTON)
     me.textmapview = TextmapView(me.window)
-    me.ui_id = panel.add_item(me.textmapview, "TextMap", "textMap", image)
-    
-    me.panel = panel
+    me.panel_item = Tepl.PanelItem.new(me.textmapview, "TextMap", _("Thumbnail"), None, 0)
+    panel.add(me.panel_item)
 
   def deactivate(me):
     me.window = None
@@ -281,3 +287,4 @@ class WindowActivatable(GObject.Object, Gedit.WindowActivatable):
   def update_ui(self):
     if self.window in self._instances:
       self._instances[self.window].update_ui()
+
